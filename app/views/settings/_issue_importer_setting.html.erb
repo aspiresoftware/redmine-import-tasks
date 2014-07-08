@@ -1,0 +1,211 @@
+<h2>Configure column positions of your excel sheets </h2>
+<p> 
+
+<% column_array=[['1', 0], ['2', 1],['3', 2],['4', 3],['5', 4],['6', 5],['7', 6],['8', 7],['9', 8],['10', 9]] %>
+<label><%= l(:label_column_position_for_task_title) %> </label>
+<%= select_tag  'settings[task_column]', options_for_select(column_array,settings['task_column'] ) ,:style => "width:45px" ,:class =>"select_box" ,:onchange => "changeColumnPosition(this);"%>
+</p>
+
+<p> 
+<label><%= l(:label_column_position_for_task_description) %> </label>
+<%= select_tag  'settings[task_description_column]', options_for_select(column_array,settings['task_description_column'] ) ,:style => "width:45px" ,:class =>"select_box" ,:onchange => "changeColumnPosition(this);"%>
+</p>
+
+<p>
+<label><%= l(:label_column_position_for_average_hour_case) %></label>
+<%= select_tag 'settings[average_hour_column]' , options_for_select(column_array,settings['average_hour_column'] ) ,:style => "width:45px" ,:class =>"select_box" ,:onchange =>"changeColumnPosition(this);"%>
+</p>
+
+<p>
+<label><%= l(:label_column_position_for_start_date) %></label>
+<%= select_tag 'settings[start_date_column]',options_for_select(column_array,settings['start_date_column'] ) ,:style => "width:45px",
+     :class =>"select_box" ,:onchange =>"changeColumnPosition(this);"%>
+</p>
+
+<p>
+<label><%= l(:label_column_position_for_end_date) %></label>
+<%= select_tag 'settings[end_date_column]', options_for_select(column_array,settings['end_date_column'] ) ,:style => "width:45px" ,
+		:class =>"select_box" ,:onchange => "changeColumnPosition(this);"
+ %>
+</p>
+
+<p>
+<label><%= l(:label_column_position_for_asignee_name) %></label>
+<%= select_tag 'settings[asignee_name_column]', options_for_select(column_array,settings['asignee_name_column'] ) ,:style => "width:45px" ,:class =>"select_box" , :onchange => "changeColumnPosition(this);"%>
+</p>
+
+<p>
+
+<label><%= l(:label_save_task_as) %></label>
+
+<% tracker_array = Tracker.all.map { |tracker| [tracker.name, tracker.id] } %>
+
+<%=select_tag 'settings[save_task_as]' ,options_for_select(tracker_array,settings['save_task_as']),:style => "width:70px" ,
+	:class =>"select_box"%>
+</p>
+
+
+
+
+ <%= button_tag 'Generate Excel Sheet',:type => 'button',:class => "subBtn" ,:onclick => 'geneateExcelSheet()' %>
+
+ <br/><br/>
+<h1>Excel Sheet Preview</h1>
+
+<!-- <iframe id="excel-sheet" src="https://docs.google.com/spreadsheets/d/1Ntr1SH1t_C3VejVz_hMjnoQLu7bWyuYECSZ7wPwQz-M/pubhtml?widget=true&amp;headers=false" width="100%" height="400px" format="xls"></iframe> -->
+<!-- <div style="float:left;">
+	<div style="float:left;width:120px;">Task</div>
+	<div style="float:left;width:120px;">Task</div>
+	<div style="float:left;width:120px;">Task</div>
+	<div style="float:left;width:120px;">Task</div>
+	<div style="float:left;width:120px;">Task</div>
+	<div style="float:left;width:120px;">Task</div>
+
+</div> -->
+
+<table id="excel-view-table" style="border:2px solid;">
+	<tr id="table-header" style="border:2px solid;">   
+		
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+
+	</tr>
+
+</table>
+<% content_for :header_tags do %>
+  
+  <%= javascript_include_tag :issue_importer, :plugin => 'issue_importer_xls' %>
+ 
+ 
+<% end %>
+
+ <script type="text/javascript">
+// 	$( ".select_box" ).change(function() {
+// 		alert( "Handler for change called " );
+// 	});
+$(document).ready(function(){
+			
+				
+			var taskColumn=$("#settings_task_column").val();
+			var taskDescription=$("#settings_task_description_column").val();
+			var averageHourColumn=$("#settings_average_hour_column").val();
+			var startDateColumn=$("#settings_start_date_column").val();
+			var dueDateColumn=$("#settings_end_date_column").val();
+			var asigneeColumn=$("#settings_asignee_name_column").val();
+			var appendString="";
+
+			var tableHeader=$("#table-header");
+
+			for(var i=0;i<10;i++){
+
+					if(i==taskColumn) appendString+="<th id="+i+" class='taskTitle'>Task</th>";
+					else if(i==taskDescription) appendString+="<th id="+i+" class='taskDescription'>Task Description</th>";
+					else if(i==averageHourColumn) appendString+="<th id="+i+" class='averageHour'>Average Hour Case</th>" ;
+					else if(i==startDateColumn) appendString+="<th id="+i+" class='startDate'>Start Date(YYYY-MM-dd)</th>";
+					else if(i==dueDateColumn) appendString+="<th id="+i+" class='endDate'>Due Date(YYYY-MM-dd)</th>" ;
+					else if(i==asigneeColumn) appendString+="<th id="+i+" class='asignee'>Asignee</th>" ;
+					else appendString+="<th id="+i+"></th>"
+
+
+			}
+			tableHeader.append(appendString);
+
+  	 	});
+
+
+function changeColumnPosition(element){
+
+	if(element.id == "settings_task_column"){
+		columnPos=$("#settings_task_column").val();
+		$(".taskTitle").empty();
+		$("th").removeClass("taskTitle");
+		$("#"+columnPos).empty();
+		$("#"+columnPos).html("Task");
+		$("#"+columnPos).addClass("taskTitle");
+	}else if(element.id == "settings_task_description_column"){
+		columnPos=$("#settings_task_description_column").val();
+		$(".taskDescription").empty();
+		$("#"+columnPos).empty();
+		$("th").removeClass("taskDescription");
+		$("#"+columnPos).html("Task Description");
+		$("#"+columnPos).addClass("taskDescription");
+	}else if(element.id == "settings_average_hour_column"){
+		$(".averageHour").empty();
+		$("th").removeClass("averageHour");
+		columnPos=$("#settings_average_hour_column").val();
+		$("#"+columnPos).empty();
+		$("#"+columnPos).html("Average Hour Case");
+		$("#"+columnPos).addClass("averageHour");
+
+	}else if(element.id== "settings_start_date_column"){
+		$(".startDate").empty();
+		$("th").removeClass("startDate");
+		columnPos=$("#settings_start_date_column").val();
+		$("#"+columnPos).empty();
+		$("#"+columnPos).html("Start Date(YYYY-MM-dd)");
+		$("#"+columnPos).addClass("startDate");
+
+	}else if(element.id=="settings_end_date_column"){
+
+		$(".endDate").empty();
+		$("th").removeClass("endDate");
+		columnPos=$("#settings_end_date_column").val();
+		$("#"+columnPos).empty();
+		$("#"+columnPos).html("End Date(YYYY-MM-dd)");
+		$("#"+columnPos).addClass("endDate");
+
+	}else if(element.id == "settings_asignee_name_column"){
+		$(".asignee").empty();
+		$("th").removeClass("asignee");
+		columnPos=$("#settings_asignee_name_column").val();
+		$("#"+columnPos).empty();
+		$("#"+columnPos).html("Asignee");
+		$("#"+columnPos).addClass("asignee");
+
+	}else {
+		alert("No id match");
+	}
+
+
+
+}
+function geneateExcelSheet(){
+	// alert('Generate Excel Sheet');
+	// alert();
+	// alert();
+	// alert($("#settings_average_hour_column").val());
+	// alert($("#settings_start_date_column").val());
+
+	  $.ajax({
+	    type: "POST",
+	    url: '/generate_excel_sheet',
+	    data:"task_column="+$("#settings_task_column").val()+"&task_description_column="+$("#settings_task_description_column").val()
+	    	+"&average_hour_column="+$("#settings_average_hour_column").val()+"&start_date_column="
+	    	+$("#settings_start_date_column").val()+"&end_date_column="+$("#settings_end_date_column").val()
+	    	+"&asignee_name_column="+$("#settings_asignee_name_column").val()
+	    
+	     //	console.log(data);
+	    // 	window.open(data,'_blank'); 
+
+
+  	 	}).done(function(msg) {
+			//window.open(msg,'_blank'); 
+			
+			window.open(msg,"_blank");
+			// $("#excel-sheet").attr('src',"http://localhost:3000/"+msg);   
+	 });
+
+
+
+}
+ </script>

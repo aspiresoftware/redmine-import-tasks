@@ -1,0 +1,19 @@
+# English strings go here for Rails i18n
+en:
+  # my_label: "My label"
+  label_import_issue_note: Import issues from Excel file
+  label_import_issue_upload_file_note: Upload Excel Sheet with following format to create issues.
+  label_import_issue_upload_file_format_note: Task Description |	Best Case	| Worst Case  |	Average Case  |	Notes  |	Questions | 	Start Date	|  Due Date	| Total(in weeks) |	Asignee
+  label_import_issue_task: Task
+  label_import_issue_design: Design
+  label_import_issue_documentation: Documentation
+  label_import_issue_testing: Testing
+  label_import_issue_development: Development
+  label_column_position_for_task_title: Column Position for Task title
+  label_column_position_for_average_hour_case: Column Position for Average Hour Case
+  label_column_position_for_start_date: Column Position for Start Date
+  label_column_position_for_end_date: Column Position for Due Date
+  label_column_position_for_asignee_name: Column Position for Asignee Name
+  label_column_position_for_task_description : Column Position for Task Description
+  label_save_task_as: Save Task as 
+  label_task_category_note: Task will be created as Feature default.To change plugin configuration go to Administration >> plugins 

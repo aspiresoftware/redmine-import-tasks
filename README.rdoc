@@ -1,0 +1,4 @@
+= issue_importer_xls
+
+
+Import issues from excel file and let the plugin handle creation of issues

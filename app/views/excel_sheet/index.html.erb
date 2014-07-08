@@ -1,0 +1,14 @@
+<h2> <%= l(:label_import_issue_note) %></h2>
+
+<p><%= l(:label_import_issue_upload_file_note) %></p>
+<p> <%= l(:label_import_issue_upload_file_format_note) %>  </p>
+<p> <%= l(:label_task_category_note) %>  </p>
+
+<p>
+<%= form_tag({action: :upload_sheet}, multipart: true) do %>
+  <%= file_field_tag 'file' %>
+  <%= submit_tag l(:button_submit) %>
+<% end %>
+  </p>
+
+

@@ -1,6 +1,6 @@
 class ExcelSheetController < ApplicationController
   unloadable
-  	before_filter :find_project, :require_admin, :authorize,:only => :index
+  	# before_filter :find_project, :require_admin, :authorize,:only => :index
 
 	def index
 
@@ -24,7 +24,7 @@ class ExcelSheetController < ApplicationController
   				return
 		   end
 		  
-		   unless Dir.exists?("#{Rails.root}/public/uploads") 
+		   unless File.exists?("#{Rails.root}/public/uploads") 
 		   		Dir::mkdir("#{Rails.root}/public/uploads")
 		   end
 
@@ -150,7 +150,7 @@ class ExcelSheetController < ApplicationController
 	    sheet1 = workbook.create_worksheet :name => "Redmine Sample Sheet"
 
 	    sheet1.row(0).replace column_headers	  
-	    unless Dir.exists?("#{Rails.root}/public/uploads/exports") 
+	    unless File.exists?("#{Rails.root}/public/uploads/exports") 
 		   	Dir::mkdir("#{Rails.root}/public/uploads/exports")
 		end
 			excel_sheet_file_path=["public", "uploads", "exports", "Redmine_Sample_Issue_Sheet.xls"].join("/")

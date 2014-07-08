@@ -5,7 +5,7 @@
 <p> <%= l(:label_task_category_note) %>  </p>
 
 <p>
-<%= form_tag({action: :upload_sheet}, multipart: true) do %>
+<%= form_tag({:action => 'upload_sheet' }, :multipart => true) do %>
   <%= file_field_tag 'file' %>
   <%= submit_tag l(:button_submit) %>
 <% end %>

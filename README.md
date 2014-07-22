@@ -7,10 +7,11 @@ Import tasks plugin for Redmine 2.2+
 Create issues in Redmine  from Excel Sheet/SpreadSheet (Estimation Sheet).
 
 ###Installing Issue Importer Plugin
-To install clone the repository into {Redmine-Root}/plugins and restart Redmine Application.
+To install Issue Importer plugin do the following steps:
 
-* git clone https://github.com/aspiresoftware/redmine-import-tasks.git 
-* Restart Redmine Application to see the plugin in action
+* Go to the {Redmine-Root}/plugins directory in terminal.
+* Exceute command : git clone https://github.com/aspiresoftware/redmine-import-tasks.git 
+* After successful cloning restart Redmine Application to see the plugin in action
 
 #####Please note that the plugin uses Roo gem to read & parse  Excel Sheet that depends on Ruby 1.9+ .
 So ,plugin only works with Redmine running on ruby 1.9+

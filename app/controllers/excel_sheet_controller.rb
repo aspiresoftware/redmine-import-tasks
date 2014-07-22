@@ -63,14 +63,28 @@ class ExcelSheetController < ApplicationController
  		 excel_error_message="Excel File contains following error.<br>"
  		 excel_having_errors=false
 
+ 		 #get plugin configuration 
+ 		 settings_conf=Setting.plugin_issue_importer_xls
+ 		 logger.info "#{settings_conf}"
  		 ((workbook.first_row + 1)..workbook.last_row).each do |row|
 
  		 	row_content=Array.new(workbook.row(row))
- 		 	if row_content[0].nil? 
+ 		 	row_content.each {|content| logger.info "#{content} --- #{content.class.name}" } 
+ 		    
+ 		 	if row_content[settings_conf['task_column'].to_i].nil? || row_content[settings_conf['task_description_column'].to_i].nil? 
 
- 		 		excel_error_message.concat("Excel Row #{row} does not contain task description.<br>")
+ 		 		excel_error_message.concat("Excel Row ##{row} does not contain task description.<br>")
  		 		excel_having_errors=true
  		 	end	
+
+ 		 	if row_content[settings_conf['start_date_column'].to_i].class.name != "Date" || row_content[settings_conf['end_date_column'].to_i].class.name != "Date" 
+ 		 		excel_error_message.concat("Excel Row ##{row} does not contain valid Start Date/End Date<br>")
+ 		 		excel_having_errors=true
+ 		 	end
+ 		 	if 	row_content[settings_conf['average_hour_column'].to_i].class.name != "Float"
+ 		 		excel_error_message.concat("Excel Row ##{row} does not contain valid Estimated time<br>")
+ 		 		excel_having_errors=true
+ 		 	end
 
  		 end 
 
@@ -78,8 +92,7 @@ class ExcelSheetController < ApplicationController
 
  		 unless  excel_having_errors
 
- 		 #get plugin configuration 
- 		 settings_conf=Setting.plugin_issue_importer_xls
+ 		 
 
  		 ((workbook.first_row + 1)..workbook.last_row).each do |row|
 
@@ -114,7 +127,7 @@ class ExcelSheetController < ApplicationController
 
 	 	 else
 
-	 	 	flash[:notice]=excel_error_message
+	 	 	flash[:error]=excel_error_message
 	 	 	redirect_to :action => 'index', :id => session[:project_id]
 	 	 	return
  		 	

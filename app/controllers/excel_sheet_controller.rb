@@ -98,10 +98,12 @@ class ExcelSheetController < ApplicationController
 				 	issue.estimated_hours=row_content[settings_conf['average_hour_column'].to_i]
 				 	issue.start_date=row_content[settings_conf['start_date_column'].to_i]
 				 	issue.due_date=row_content[settings_conf['end_date_column'].to_i]
-
+				 	#issue.custom_field_values={"10"=>"#{User.current.id}"}
+				 	issue.assigned_to_id=User.current.id
 				 	User.all.each do |user|
 				 		if user.name.eql? row_content[settings_conf['asignee_name_column'].to_i]
 				 			issue.assigned_to_id=user.id
+				 			#issue.custom_field_values={"10"=>"#{user.id}"}
 				 		end
 				 	end
 				 	#Save issue for project

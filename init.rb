@@ -4,7 +4,7 @@ Redmine::Plugin.register :issue_importer_xls do
   description 'Import Excel Sheet to create Redmine issues'
   url 'http://aspiresoftware.co.in'
   author_url 'http://aspiresoftware.co.in'
-  version '0.0.1'
+  version '0.1.0'
 
   if RUBY_VERSION >= "1.9"
     project_module :issue_importer_xls do

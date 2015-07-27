@@ -7,7 +7,7 @@ Redmine::Plugin.register :issue_importer_xls do
   version '0.1.2'
 
   if RUBY_VERSION >= "1.9"
-    project_mudule :issue_importer_xls do
+    project_module :issue_importer_xls do
       permission :excel_sheet, { :excel_sheet => [:index, :upload_sheet] }, :public => true
     end
     # menu :project_menu, :polls, { :controller => 'polls', :action => 'index' }, :caption => 'Polls', :after => :activity, :param => :project_id
